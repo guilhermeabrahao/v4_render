@@ -2,10 +2,7 @@ services:
   - type: web
     name: ad-verification-tool
     env: python
-    buildCommand: |
-      pip install -r requirements.txt
-      python -m playwright install chromium
-      python -m playwright install-deps chromium
+    buildCommand:buildCommand: pip install -r requirements.txt && playwright install --with-deps chromium
     startCommand: gunicorn app:app -c gunicorn.conf.py
     envVars:
       - key: PYTHON_VERSION
