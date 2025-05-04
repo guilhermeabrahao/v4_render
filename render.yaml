@@ -1,13 +1,16 @@
 services:
   - type: web
     name: ad-verification-tool
-    runtime: python3
+    env: python
     buildCommand: |
       pip install -r requirements.txt
-      npx playwright install  # Adiciona o comando para instalar o navegador do Playwright
+      python -m playwright install chromium
+      python -m playwright install-deps chromium
     startCommand: gunicorn app:app -c gunicorn.conf.py
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.4
       - key: OPENAI_API_KEY
-        value: ${OPENAI_API_KEY}  # Use Render's environment variables
+        sync: false
     healthCheckPath: /
     autoDeploy: true
