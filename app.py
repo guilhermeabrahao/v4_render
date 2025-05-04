@@ -7,6 +7,14 @@ import threading
 import requests
 import time
 from dotenv import load_dotenv
+import subprocess
+
+try:
+    subprocess.run(["python", "-m", "playwright", "install", "chromium"], check=True)
+    print("Playwright installed successfully")
+except subprocess.CalledProcessError as e:
+    print(f"Error installing Playwright: {e}")
+
 
 # Load environment variables
 load_dotenv()
