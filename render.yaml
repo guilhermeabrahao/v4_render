@@ -1,18 +1,16 @@
 services:
   - type: web
     name: ad-verification-tool
-    # Specify Docker environment
-    env: docker 
-    # buildCommand and startCommand are now defined in the Dockerfile
-    # PYTHON_VERSION is also defined in the Dockerfile
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python -m playwright install chromium
+      python -m playwright install-deps chromium
+    startCommand: gunicorn app:app -c gunicorn.conf.py
     envVars:
-      # Keep environment variables needed at runtime
+      - key: PYTHON_VERSION
+        value: 3.11.0
       - key: OPENAI_API_KEY
         sync: false
-    # Keep health check and auto-deploy settings
     healthCheckPath: /
     autoDeploy: true
-    # Render automatically detects Dockerfile in the root directory
-    # If your Dockerfile is elsewhere, uncomment and set the path:
-    # dockerfilePath: ./path/to/your/Dockerfile
-
